@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -40,7 +40,7 @@ get_batch_options() {
 get_batch_options "$@"
 
 StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
 EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
@@ -75,7 +75,7 @@ PRINTCOM=""
 #PRINTCOM="echo"
 #QUEUE="-q veryshort.q"
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 # Scripts called by this script do NOT assume anything about the form of the input names or paths.
 # This batch script assumes the HCP raw data naming convention.
@@ -132,24 +132,28 @@ SCRIPT_NAME=`basename ${0}`
 echo $SCRIPT_NAME
 
 TaskList=""
-TaskList+=" rfMRI_REST1_RL"  #Include space as first character
-TaskList+=" rfMRI_REST1_LR"
-TaskList+=" rfMRI_REST2_RL"
-TaskList+=" rfMRI_REST2_LR"
-TaskList+=" tfMRI_EMOTION_RL"
-TaskList+=" tfMRI_EMOTION_LR"
-TaskList+=" tfMRI_GAMBLING_RL"
-TaskList+=" tfMRI_GAMBLING_LR"
-TaskList+=" tfMRI_LANGUAGE_RL"
-TaskList+=" tfMRI_LANGUAGE_LR"
-TaskList+=" tfMRI_MOTOR_RL"
-TaskList+=" tfMRI_MOTOR_LR"
-TaskList+=" tfMRI_RELATIONAL_RL"
-TaskList+=" tfMRI_RELATIONAL_LR"
-TaskList+=" tfMRI_SOCIAL_RL"
-TaskList+=" tfMRI_SOCIAL_LR"
-TaskList+=" tfMRI_WM_RL"
-TaskList+=" tfMRI_WM_LR"
+TaskList+=" rfMRI_REST1_AP"
+TaskList+=" rfMRI_REST1_PA"
+TaskList+=" rfMRI_REST2_AP"
+TaskList+=" rfMRI_REST1_PA"
+# TaskList+=" rfMRI_REST1_RL"  #Include space as first character
+# TaskList+=" rfMRI_REST1_LR"
+# TaskList+=" rfMRI_REST2_RL"
+# TaskList+=" rfMRI_REST2_LR"
+# TaskList+=" tfMRI_EMOTION_RL"
+# TaskList+=" tfMRI_EMOTION_LR"
+# TaskList+=" tfMRI_GAMBLING_RL"
+# TaskList+=" tfMRI_GAMBLING_LR"
+# TaskList+=" tfMRI_LANGUAGE_RL"
+# TaskList+=" tfMRI_LANGUAGE_LR"
+# TaskList+=" tfMRI_MOTOR_RL"
+# TaskList+=" tfMRI_MOTOR_LR"
+# TaskList+=" tfMRI_RELATIONAL_RL"
+# TaskList+=" tfMRI_RELATIONAL_LR"
+# TaskList+=" tfMRI_SOCIAL_RL"
+# TaskList+=" tfMRI_SOCIAL_LR"
+# TaskList+=" tfMRI_WM_RL"
+# TaskList+=" tfMRI_WM_LR"
 
 # Start or launch pipeline processing for each subject
 for Subject in $Subjlist ; do
@@ -158,17 +162,17 @@ for Subject in $Subjlist ; do
   i=1
   for fMRIName in $TaskList ; do
     echo "  ${SCRIPT_NAME}: Processing Scan: ${fMRIName}"
-	  
+
 	TaskName=`echo ${fMRIName} | sed 's/_[APLR]\+$//'`
 	echo "  ${SCRIPT_NAME}: TaskName: ${TaskName}"
 
 	len=${#fMRIName}
 	echo "  ${SCRIPT_NAME}: len: $len"
 	start=$(( len - 2 ))
-		
+
 	PhaseEncodingDir=${fMRIName:start:2}
 	echo "  ${SCRIPT_NAME}: PhaseEncodingDir: ${PhaseEncodingDir}"
-		
+
 	case ${PhaseEncodingDir} in
 	  "PA")
 		UnwarpDir="y"
@@ -186,22 +190,22 @@ for Subject in $Subjlist ; do
 		echo "${SCRIPT_NAME}: Unrecognized Phase Encoding Direction: ${PhaseEncodingDir}"
 		exit 1
 	esac
-	
+
 	echo "  ${SCRIPT_NAME}: UnwarpDir: ${UnwarpDir}"
-		
-    fMRITimeSeries="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_${fMRIName}.nii.gz"
+
+    fMRITimeSeries="${StudyFolder}/${Subject}/unprocessed/${fMRIName}/${Subject}_${fMRIName}.nii.gz"
 
 	# A single band reference image (SBRef) is recommended if available
 	# Set to NONE if you want to use the first volume of the timeseries for motion correction
-    fMRISBRef="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_${fMRIName}_SBRef.nii.gz"
-	
+    fMRISBRef="${StudyFolder}/${Subject}/unprocessed/${fMRIName}/${Subject}_${fMRIName}_SBRef.nii.gz"
+
 	# "Effective" Echo Spacing of fMRI image (specified in *sec* for the fMRI processing)
 	# EchoSpacing = 1/(BWPPPE * ReconMatrixPE)
 	#   where BWPPPE is the "BandwidthPerPixelPhaseEncode" = DICOM field (0019,1028) for Siemens, and
 	#   ReconMatrixPE = size of the reconstructed image in the PE dimension
 	# In-plane acceleration, phase oversampling, phase resolution, phase field-of-view, and interpolation
 	# all potentially need to be accounted for (which they are in Siemen's reported BWPPPE)
-    EchoSpacing="0.00058" 
+    EchoSpacing="0.00058"
 
 	# Susceptibility distortion correction method (required for accurate processing)
 	# Values: TOPUP, SiemensFieldMap (same as FIELDMAP), GeneralElectricFieldMap
@@ -216,12 +220,12 @@ for Subject in $Subjlist ; do
 	# For the spin echo field map volume with a 'negative' phase encoding direction
 	# (LR in HCP-YA data; AP in 7T HCP-YA and HCP-D/A data)
 	# Set to NONE if using regular FIELDMAP
-    SpinEchoPhaseEncodeNegative="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_SpinEchoFieldMap_LR.nii.gz"
+    SpinEchoPhaseEncodeNegative="${StudyFolder}/${Subject}/unprocessed/${fMRIName}/${Subject}_SpinEchoFieldMap${fMRIName:(-4):1}_AP.nii.gz"
 
 	# For the spin echo field map volume with a 'positive' phase encoding direction
 	# (RL in HCP-YA data; PA in 7T HCP-YA and HCP-D/A data)
 	# Set to NONE if using regular FIELDMAP
-    SpinEchoPhaseEncodePositive="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_SpinEchoFieldMap_RL.nii.gz"
+    SpinEchoPhaseEncodePositive="${StudyFolder}/${Subject}/unprocessed/${fMRIName}/${Subject}_SpinEchoFieldMap${fMRIName:(-4):1}_PA.nii.gz"
 
 	# Topup configuration file (if using TOPUP)
 	# Set to NONE if using regular FIELDMAP
@@ -232,14 +236,14 @@ for Subject in $Subjlist ; do
 	MagnitudeInputName="NONE" #Expects 4D Magnitude volume with two 3D volumes (differing echo times)
     PhaseInputName="NONE" #Expects a 3D Phase difference volume (Siemen's style)
     DeltaTE="NONE" #2.46ms for 3T, 1.02ms for 7T
-	
+
     # Path to General Electric style B0 fieldmap with two volumes
     #   1. field map in degrees
     #   2. magnitude
     # Set to "NONE" if not using "GeneralElectricFieldMap" as the value for the DistortionCorrection variable
     #
-    # Example Value: 
-    #  GEB0InputName="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_GradientEchoFieldMap.nii.gz" 
+    # Example Value:
+    #  GEB0InputName="${StudyFolder}/${Subject}/unprocessed/3T/${fMRIName}/${Subject}_3T_GradientEchoFieldMap.nii.gz"
     GEB0InputName="NONE"
 
 	# Target final resolution of fMRI data
@@ -257,7 +261,7 @@ for Subject in $Subjlist ; do
 	# Values: MCFLIRT (default), FLIRT
 	# (3T HCP-YA processing used 'FLIRT', but 'MCFLIRT' now recommended)
     MCType="MCFLIRT"
-		
+
     if [ -n "${command_line_specified_run_local}" ] ; then
         echo "About to run ${HCPPIPEDIR}/fMRIVolume/GenericfMRIVolumeProcessingPipeline.sh"
         queuing_command=""
@@ -312,9 +316,7 @@ for Subject in $Subjlist ; do
       --mctype=${MCType}"
 
   echo ". ${EnvironmentScript}"
-	
+
     i=$(($i+1))
   done
 done
-
-

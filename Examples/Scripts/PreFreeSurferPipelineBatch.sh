@@ -127,7 +127,7 @@ main()
 
 	# Set variable values that locate and specify data to process
 	StudyFolder="${HOME}/projects/Pipelines_ExampleData" # Location of Subject folders (named by subjectID)
-	Subjlist="100307"                                    # Space delimited list of subject IDs
+	Subjlist="1001_01_MR"                                    # Space delimited list of subject IDs
 
 	# Set variable value that sets up environment
 	EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" # Pipeline environment script
@@ -217,27 +217,31 @@ main()
 
 		# Input Images
 
+		# HCP-EP contains one T1w and T2w images
+		T1wInputImages="${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/T1w_MPR/${Subject}_T1w_MPR.nii.gz@"
+		T2wInputImages="${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/T2w_SPC/${Subject}_T2w_SPC.nii.gz@"
+
 		# Detect Number of T1w Images and build list of full paths to
 		# T1w images
-		numT1ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T1w_MPR.$' | wc -l`
-		echo "Found ${numT1ws} T1w Images for subject ${Subject}"
-		T1wInputImages=""
-		i=1
-		while [ $i -le $numT1ws ] ; do
-			T1wInputImages=`echo "${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR${i}/${Subject}_3T_T1w_MPR${i}.nii.gz@"`
-			i=$(($i+1))
-		done
+		# numT1ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T1w_MPR.$' | wc -l`
+		# echo "Found ${numT1ws} T1w Images for subject ${Subject}"
+		# T1wInputImages=""
+		# i=1
+		# while [ $i -le $numT1ws ] ; do
+		# 	T1wInputImages=`echo "${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR${i}/${Subject}_3T_T1w_MPR${i}.nii.gz@"`
+		# 	i=$(($i+1))
+		# done
 
 		# Detect Number of T2w Images and build list of full paths to
 		# T2w images
-		numT2ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T2w_SPC.$' | wc -l`
-		echo "Found ${numT2ws} T2w Images for subject ${Subject}"
-		T2wInputImages=""
-		i=1
-		while [ $i -le $numT2ws ] ; do
-			T2wInputImages=`echo "${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T2w_SPC${i}/${Subject}_3T_T2w_SPC${i}.nii.gz@"`
-			i=$(($i+1))
-		done
+		# numT2ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T2w_SPC.$' | wc -l`
+		# echo "Found ${numT2ws} T2w Images for subject ${Subject}"
+		# T2wInputImages=""
+		# i=1
+		# while [ $i -le $numT2ws ] ; do
+		# 	T2wInputImages=`echo "${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T2w_SPC${i}/${Subject}_3T_T2w_SPC${i}.nii.gz@"`
+		# 	i=$(($i+1))
+		# done
 
 		# Readout Distortion Correction:
 		#
@@ -287,14 +291,17 @@ main()
 		# The MagnitudeInputName variable should be set to a 4D magitude volume
 		# with two 3D timepoints or "NONE" if not used
 		MagnitudeInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Magnitude.nii.gz"
+		MagnitudeInputName="NONE"
 
 		# The PhaseInputName variable should be set to a 3D phase difference
 		# volume or "NONE" if not used
 		PhaseInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Phase.nii.gz"
+		PhaseInputName="NONE"
 
 		# The TE variable should be set to 2.46ms for 3T scanner, 1.02ms for 7T
 		# scanner or "NONE" if not using
-		TE="2.46"
+		# TE is set to 2.22 for the HCP-EP protocol T1w_MPR (although not used)
+		TE="2.22"
 
 		# ----------------------------------------------------------------------
 		# Variables related to using Spin Echo Field Maps
@@ -313,7 +320,8 @@ main()
 		# Example values for when using Spin Echo Field Maps from a Siemens machine:
 		#   ${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_SpinEchoFieldMap_LR.nii.gz
 		#   ${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_SpinEchoFieldMap_AP.nii.gz
-		SpinEchoPhaseEncodeNegative="NONE"
+		# SpinEchoPhaseEncodeNegative="NONE"
+	  SpinEchoPhaseEncodeNegative="${StudyFolder}/${Subject}/unprocessed/T1w_MPR/OTHER_FILES/${Subject}_SpinEchoFieldMap1_AP.nii.gz"
 
 		# The SpinEchoPhaseEncodePositive variable should be set to the
 		# spin echo field map volume with positive phase encoding direction
@@ -324,7 +332,8 @@ main()
 		# Example values for when using Spin Echo Field Maps from a Siemens machine:
 		#   ${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_SpinEchoFieldMap_RL.nii.gz
 		#   ${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_SpinEchoFieldMap_PA.nii.gz
-		SpinEchoPhaseEncodePositive="NONE"
+		# SpinEchoPhaseEncodePositive="NONE"
+		SpinEchoPhaseEncodePositive="${StudyFolder}/${Subject}/unprocessed/T1w_MPR/OTHER_FILES/${Subject}_SpinEchoFieldMap1_PA.nii.gz"
 
 		# "Effective" Echo Spacing of *Spin Echo Field Maps*. Specified in seconds.
 		# Set to "NONE" if not used.
@@ -336,7 +345,8 @@ main()
 		#
 		# Example value for when using Spin Echo Field Maps from the HCP-YA
 		#   0.000580002668012
-		SEEchoSpacing="NONE"
+		# SEEchoSpacing="NONE"
+		SEEchoSpacing="0.0075"
 
 		# Spin Echo Unwarping Direction (according to the *voxel* axes)
 		# {x,y} (FSL nomenclature), or alternatively, {i,j} (BIDS nomenclature for the voxel axes)
@@ -345,14 +355,15 @@ main()
 		# Example values for when using Spin Echo Field Maps: {x,y} or {i,j}
 		# Note: '+x' or '+y' are not supported. i.e., for positive values, DO NOT include the '+' sign
 		# Note: Polarity not important here [i.e., don't use {x-,y-} or {i-,j-}]
-		SEUnwarpDir="NONE"
+		# SEUnwarpDir="NONE"
+		SEUnwarpDir="y"
 
 		# Topup Configuration file
 		# Set to "NONE" if not using SEFMs
 		#
 		# Default file to use when using SEFMs
-		#   TopUpConfig="${HCPPIPEDIR_Config}/b02b0.cnf"
-		TopupConfig="NONE"
+	  TopUpConfig="${HCPPIPEDIR_Config}/b02b0.cnf"
+		# TopupConfig="NONE"
 
 		# ----------------------------------------------------------------------
 		# Variables related to using General Electric specific Gradient Echo
@@ -420,10 +431,10 @@ main()
 		# Connectom Scanner
 
 		# DICOM field (0019,1018) in s or "NONE" if not used
-		T1wSampleSpacing="0.0000074"
+		T1wSampleSpacing="0.0000074" # HCP-EP value??
 
 		# DICOM field (0019,1018) in s or "NONE" if not used
-		T2wSampleSpacing="0.0000021"
+		T2wSampleSpacing="0.0000021" # HCP-EP value??
 
 		# z appears to be the appropriate polarity for the 3D structurals collected on Siemens scanners
 		UnwarpDir="z"

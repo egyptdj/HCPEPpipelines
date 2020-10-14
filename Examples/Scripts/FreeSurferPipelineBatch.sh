@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -40,7 +40,7 @@ get_batch_options() {
 get_batch_options "$@"
 
 StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
 EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
@@ -72,7 +72,7 @@ echo "$@"
 #QUEUE="-q veryshort.q"
 
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 #Scripts called by this script do assume they run on the outputs of the PreFreeSurfer Pipeline
 
@@ -102,7 +102,7 @@ for Subject in $Subjlist ; do
       --t1="$T1wImage" \
       --t1brain="$T1wImageBrain" \
       --t2="$T2wImage"
-      
+
   # The following lines are used for interactive debugging to set the positional parameters: $1 $2 $3 ...
 
   echo "set -- --subject=$Subject \
@@ -114,4 +114,3 @@ for Subject in $Subjlist ; do
   echo ". ${EnvironmentScript}"
 
 done
-
