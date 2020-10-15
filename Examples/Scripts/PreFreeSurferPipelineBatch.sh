@@ -217,31 +217,31 @@ main()
 
 		# Input Images
 
-		# HCP-EP contains one T1w and T2w images
-		T1wInputImages="${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/T1w_MPR/${Subject}_T1w_MPR.nii.gz@"
-		T2wInputImages="${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/T2w_SPC/${Subject}_T2w_SPC.nii.gz@"
-
 		# Detect Number of T1w Images and build list of full paths to
 		# T1w images
-		# numT1ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T1w_MPR.$' | wc -l`
+		# numT1ws=`ls ${StudyFolder}/${Subject}/unprocessed | grep 'T1w_MPR' | wc -l`
 		# echo "Found ${numT1ws} T1w Images for subject ${Subject}"
-		# T1wInputImages=""
-		# i=1
-		# while [ $i -le $numT1ws ] ; do
-		# 	T1wInputImages=`echo "${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR${i}/${Subject}_3T_T1w_MPR${i}.nii.gz@"`
-		# 	i=$(($i+1))
-		# done
+		# HCP-EP contains one T1w image
+		numT1ws=1
+		T1wInputImages=""
+		i=1
+		while [ $i -le $numT1ws ] ; do
+			T1wInputImages=`echo "${T1wInputImages}${StudyFolder}/${Subject}/unprocessed/T1w_MPR/${Subject}_T1w_MPR.nii.gz@"`
+			i=$(($i+1))
+		done
 
 		# Detect Number of T2w Images and build list of full paths to
 		# T2w images
-		# numT2ws=`ls ${StudyFolder}/${Subject}/unprocessed/3T | grep 'T2w_SPC.$' | wc -l`
+		# numT2ws=`ls ${StudyFolder}/${Subject}/unprocessed | grep 'T2w_SPC' | wc -l`
 		# echo "Found ${numT2ws} T2w Images for subject ${Subject}"
-		# T2wInputImages=""
-		# i=1
-		# while [ $i -le $numT2ws ] ; do
-		# 	T2wInputImages=`echo "${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/3T/T2w_SPC${i}/${Subject}_3T_T2w_SPC${i}.nii.gz@"`
-		# 	i=$(($i+1))
-		# done
+		# HCP-EP contains one T2w image
+		numT2ws=1
+		T2wInputImages=""
+		i=1
+		while [ $i -le $numT2ws ] ; do
+			T2wInputImages=`echo "${T2wInputImages}${StudyFolder}/${Subject}/unprocessed/T2w_SPC/${Subject}_T2w_SPC.nii.gz@"`
+			i=$(($i+1))
+		done
 
 		# Readout Distortion Correction:
 		#
@@ -282,7 +282,8 @@ main()
 		#
 		#   Note: The AvgrdcSTRING variable could also be set to the value
 		#   "FIELDMAP" which is equivalent to "SiemensFieldMap".
-		AvgrdcSTRING="SiemensFieldMap"
+		# AvgrdcSTRING="SiemensFieldMap"
+		AvgrdcSTRING="TOPUP"
 
 		# ----------------------------------------------------------------------
 		# Variables related to using Siemens specific Gradient Echo Field Maps
@@ -290,18 +291,19 @@ main()
 
 		# The MagnitudeInputName variable should be set to a 4D magitude volume
 		# with two 3D timepoints or "NONE" if not used
-		MagnitudeInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Magnitude.nii.gz"
+		# MagnitudeInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Magnitude.nii.gz"
 		MagnitudeInputName="NONE"
 
 		# The PhaseInputName variable should be set to a 3D phase difference
 		# volume or "NONE" if not used
-		PhaseInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Phase.nii.gz"
+		# PhaseInputName="${StudyFolder}/${Subject}/unprocessed/3T/T1w_MPR1/${Subject}_3T_FieldMap_Phase.nii.gz"
 		PhaseInputName="NONE"
 
 		# The TE variable should be set to 2.46ms for 3T scanner, 1.02ms for 7T
 		# scanner or "NONE" if not using
 		# TE is set to 2.22 for the HCP-EP protocol T1w_MPR (although not used)
-		TE="2.22"
+		TE="NONE"
+		# TE="2.22"
 
 		# ----------------------------------------------------------------------
 		# Variables related to using Spin Echo Field Maps
@@ -362,7 +364,7 @@ main()
 		# Set to "NONE" if not using SEFMs
 		#
 		# Default file to use when using SEFMs
-	  TopUpConfig="${HCPPIPEDIR_Config}/b02b0.cnf"
+	  TopupConfig="${HCPPIPEDIR_Config}/b02b0.cnf"
 		# TopupConfig="NONE"
 
 		# ----------------------------------------------------------------------
