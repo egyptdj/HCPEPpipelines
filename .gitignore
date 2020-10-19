@@ -16,3 +16,5 @@
 .nfs*
 *.sh.o*
 *.sh.e*
+hcp_fix.e*
+hcp_fix.o*
