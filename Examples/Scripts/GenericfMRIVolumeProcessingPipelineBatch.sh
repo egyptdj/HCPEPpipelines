@@ -39,11 +39,9 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="/media/bispl/workdisk1/HCP_EP/HCPEPRelease/imagingcollection01" # Location of Subject folders (named by subjectID)
-# StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
+StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
 Subjlist="1001_01_MR" #Space delimited list of subject IDs
-EnvironmentScript="/media/bispl/workdisk2/22_EarlyPsychosis_2020/HCPpipelines-4.2.0/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
-# EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
