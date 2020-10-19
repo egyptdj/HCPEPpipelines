@@ -1,18 +1,24 @@
 # HCP-EP Pipelines
 This repository contains updated example batch scripts to follow the naming convention and the imaging sequence parameters of the [HCP-EP][hcp-ep] dataset.
-The HCP-EP 1.0 release includes structural preprocessed data so you can skip the (Pre/Post)FreeSurferPipelineBatch.sh if you already have the preprocessed data.
 The batch scripts can be found at `Examples/Scripts`
+Currently updated scripts are
+```
+- PreFreeSurferPipelineBatch.sh
+- FreeSurferPipelineBatch.sh
+- PostFreeSurferPipelineBatch.sh
+- GenericfMRIVolumeProcessingPipelineBatch.sh
+- GenericfMRISurfaceProcessingPipelineBatch.sh
+- DiffusionPreprocessingBatch.sh
+- IcaFixProcessingBatch.sh
+- PostFixBatch.sh
+- ApplyHandReClassificationsBatch.sh
+- MSMAllPipelineBatch.sh
+- DeDriftAndResamplePipelineBatch.sh
+```
 
-## NOTES
-- The script in this repository is based on the original [HCPpipelines][hcp-pipelines] and is modified for personal research use. The author does not take any responsibility for any consequences of using the batch scripts from this repository.
-- Currently updated scripts are
-```
-  - PreFreeSurferPipelineBatch.sh
-  - FreeSurferPipelineBatch.sh
-  - PostFreeSurferPipelineBatch.sh
-  - GenericfMRIVolumeProcessingPipelineBatch.sh
-  - DiffusionPreprocessingBatch.sh
-```
+### Notes
+- The released dataset package does not include the Native surface data. If you want to go further through fMRI surface processing and FIX denoising, you will have to run (Pre/Post)Freesurfer pipelines too.
+- Scripts in this repository are based on the original [HCPpipelines][hcp-pipelines] and is modified for personal research use. The author does not take any responsibility for any consequences of using the batch scripts from this repository.
 
 ---
 
