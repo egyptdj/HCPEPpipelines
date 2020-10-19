@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -39,9 +39,9 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="/media/myelin/brainmappers/Connectome_Project/HCP_PhaseFinalTesting" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
-EnvironmentScript="/media/myelin/brainmappers/Connectome_Project/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
+EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
@@ -53,7 +53,7 @@ fi
 
 # Requirements for this script
 #  installed versions of: FSL, Connectome Workbench (wb_command)
-#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR 
+#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR
 
 # NOTE: this script will error on subjects that are missing some fMRI runs that are specified in the MR FIX arguments
 
@@ -71,7 +71,7 @@ echo "$@"
 PRINTCOM=""
 #PRINTCOM="echo"
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 #Scripts called by this script do assume they run on the results of the HCP minimal preprocesing pipelines from Q2
 
@@ -86,9 +86,9 @@ Maps="sulc curvature corrThickness thickness"
 MyelinMaps="MyelinMap SmoothedMyelinMap" #No _BC, this will be reapplied
 MRFixConcatNames="NONE"
 MRFixNames="NONE"
-fixNames="rfMRI_REST1_LR rfMRI_REST1_RL rfMRI_REST2_LR rfMRI_REST2_RL" #Space delimited list or NONE
-fixNames="rfMRI_REST1_LR" #Space delimited list or NONE
-dontFixNames="tfMRI_WM_LR tfMRI_WM_RL tfMRI_GAMBLING_LR tfMRI_GAMBLING_RL tfMRI_MOTOR_LR tfMRI_MOTOR_RL tfMRI_LANGUAGE_LR tfMRI_LANGUAGE_RL tfMRI_SOCIAL_LR tfMRI_SOCIAL_RL tfMRI_RELATIONAL_LR tfMRI_RELATIONAL_RL tfMRI_EMOTION_LR tfMRI_EMOTION_RL" #Space delimited list or NONE
+fixNames="rfMRI_REST1_PA rfMRI_REST1_AP rfMRI_REST2_PA rfMRI_REST2_AP" #Space delimited list or NONE
+# fixNames="rfMRI_REST1_LR" #Space delimited list or NONE
+# dontFixNames="tfMRI_WM_LR tfMRI_WM_RL tfMRI_GAMBLING_LR tfMRI_GAMBLING_RL tfMRI_MOTOR_LR tfMRI_MOTOR_RL tfMRI_LANGUAGE_LR tfMRI_LANGUAGE_RL tfMRI_SOCIAL_LR tfMRI_SOCIAL_RL tfMRI_RELATIONAL_LR tfMRI_RELATIONAL_RL tfMRI_EMOTION_LR tfMRI_EMOTION_RL" #Space delimited list or NONE
 dontFixNames="NONE"
 SmoothingFWHM="2" #Should equal previous grayordinates smoothing (because we are resampling from unsmoothed native mesh timeseries)
 HighPass="2000"
@@ -104,7 +104,7 @@ dontFixNames=`echo "$dontFixNames" | sed s/" "/"@"/g`
 
 for Subject in $Subjlist ; do
 	echo "    ${Subject}"
-	
+
 	if [ -n "${command_line_specified_run_local}" ] ; then
 	    echo "About to run ${HCPPIPEDIR}/MSMAll/MSMAllPipeline.sh"
 	    queuing_command=""
@@ -132,5 +132,3 @@ for Subject in $Subjlist ; do
         --matlab-run-mode=${MatlabMode} \
         --motion-regression=${MotionRegression}
 done
-
-

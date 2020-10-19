@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -55,7 +55,7 @@ get_batch_options "$@"
 
 # Default values
 StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100206 100307 100408" #Space delimited list of subject IDs
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
 #RegName="NONE"
 RegName="MSMAll"
 
@@ -69,7 +69,7 @@ fi
 if [ -n "${command_line_specified_subj_list}" ]; then
     Subjlist="${command_line_specified_subj_list}"
     #Allow the --SubjList argument to be a file containing a list of subjects
-    # In this file, the subjects may be separated by spaces or newlines 
+    # In this file, the subjects may be separated by spaces or newlines
     # (or even a combination of the two).
     if [ -e $Subjlist ] ; then
 	Subjlist=`cat $Subjlist | tr "\n" " "`
@@ -89,8 +89,8 @@ fi
 
 ##### Code for running this script when StudyFolder is on a read-only file system #####
 # Numerous parts of MakeAverageDataset.sh expect write-access to the StudyFolder.
-# The following workaround allows one to proceed by creating a directory, 
-# specified by the --SymLinkStudyFolder command line option, 
+# The following workaround allows one to proceed by creating a directory,
+# specified by the --SymLinkStudyFolder command line option,
 # with symlinks to the necessary contents of StudyFolder for the subjects in Subjlist.
 
 if [ -n "${command_line_specified_symlink_study_folder}" ]; then
@@ -132,8 +132,8 @@ then
     set -x
 fi
 
-SurfaceAtlasDIR="${HCPPIPEDIR}/global/templates/standard_mesh_atlases" 
-GrayordinatesSpaceDIR="${HCPPIPEDIR}/global/templates/91282_Greyordinates" 
+SurfaceAtlasDIR="${HCPPIPEDIR}/global/templates/standard_mesh_atlases"
+GrayordinatesSpaceDIR="${HCPPIPEDIR}/global/templates/91282_Greyordinates"
 HighResMesh="164"
 LowResMesh="32"
 FreeSurferLabels="${HCPPIPEDIR}/global/config/FreeSurferAllLut.txt"
@@ -208,5 +208,3 @@ echo "set -- --subject-list=$Subjlist \
     --multi-maps=$MultiMaps"
 
  echo ". ${EnvironmentScript}"
-
-

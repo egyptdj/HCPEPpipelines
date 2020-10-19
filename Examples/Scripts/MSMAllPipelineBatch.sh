@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -39,9 +39,9 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="/media/myelin/brainmappers/Connectome_Project/HCP_PhaseFinalTestingMSMAll" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
-EnvironmentScript="/media/myelin/brainmappers/Connectome_Project/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
+EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
@@ -53,7 +53,7 @@ fi
 
 # Requirements for this script
 #  installed versions of: FSL, Connectome Workbench (wb_command)
-#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR 
+#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR
 
 #Set up pipeline environment variables and software
 source ${EnvironmentScript}
@@ -69,14 +69,14 @@ echo "$@"
 PRINTCOM=""
 #PRINTCOM="echo"
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 #Scripts called by this script do assume they run on the results of the HCP minimal preprocesing pipelines from Q2
 
 ######################################### DO WORK ##########################################
 
 # fMRINames is for single-run FIX data, set MR FIX settings to empty
-fMRINames="rfMRI_REST1_LR@rfMRI_REST1_RL@rfMRI_REST2_LR@rfMRI_REST2_RL"
+fMRINames="rfMRI_REST1_PA@rfMRI_REST1_AP@rfMRI_REST2_PA@rfMRI_REST2_AP"
 mrfixNames=""
 mrfixConcatName=""
 mrfixNamesToUse=""
@@ -132,5 +132,3 @@ for Subject in $Subjlist ; do
         --input-registration-name=${InRegName} \
         --matlab-run-mode=${MatlabMode}
 done
-
-

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -42,7 +42,7 @@ get_batch_options() {
 get_batch_options "$@"
 
 StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
 EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
@@ -55,7 +55,7 @@ fi
 
 # Requirements for this script
 #  installed versions of: FSL, Connectome Workbench (wb_command)
-#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR 
+#  environment: HCPPIPEDIR, FSLDIR, CARET7DIR
 
 #Set up pipeline environment variables and software
 source ${EnvironmentScript}
@@ -71,7 +71,7 @@ echo "$@"
 PRINTCOM=""
 #PRINTCOM="echo"
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 # This script runs on the outputs from ICAFIX
 
@@ -79,7 +79,7 @@ PRINTCOM=""
 
 # List of fMRI runs
 # If running on output from multi-run FIX, use ConcatName as value for fMRINames
-fMRINames="rfMRI_REST1_LR rfMRI_REST1_RL rfMRI_REST2_LR rfMRI_REST2_RL"
+fMRINames="rfMRI_REST1_PA rfMRI_REST1_AP rfMRI_REST2_PA rfMRI_REST2_AP"
 
 HighPass="2000"
 ReUseHighPass="NO" #Use YES if running on output from multi-run FIX, otherwise use NO
@@ -92,7 +92,7 @@ MatlabMode="1" #Mode=0 compiled Matlab, Mode=1 interpreted Matlab, Mode=2 octave
 for Subject in $Subjlist ; do
   for fMRIName in ${fMRINames} ; do
 	  echo "    ${Subject}"
-	
+
 	  if [ -n "${command_line_specified_run_local}" ] ; then
 	      echo "About to run ${HCPPIPEDIR}/ICAFIX/PostFix.sh"
 	      queuing_command=""
@@ -112,4 +112,3 @@ for Subject in $Subjlist ; do
     --matlab-run-mode=${MatlabMode}
   done
 done
-
