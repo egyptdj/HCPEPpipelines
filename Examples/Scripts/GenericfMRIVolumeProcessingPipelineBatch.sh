@@ -39,9 +39,11 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
+StudyFolder="/media/bispl/workdisk1/HCP_EP/HCPEPRelease/imagingcollection01" # Location of Subject folders (named by subjectID)
+# StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
 Subjlist="1001_01_MR" #Space delimited list of subject IDs
-EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+EnvironmentScript="/media/bispl/workdisk2/22_EarlyPsychosis_2020/HCPpipelines-4.2.0/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+# EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
@@ -132,28 +134,10 @@ SCRIPT_NAME=`basename ${0}`
 echo $SCRIPT_NAME
 
 TaskList=""
-TaskList+=" rfMRI_REST1_AP"
 TaskList+=" rfMRI_REST1_PA"
-TaskList+=" rfMRI_REST2_AP"
+TaskList+=" rfMRI_REST1_AP"
 TaskList+=" rfMRI_REST2_PA"
-# TaskList+=" rfMRI_REST1_RL"  #Include space as first character
-# TaskList+=" rfMRI_REST1_LR"
-# TaskList+=" rfMRI_REST2_RL"
-# TaskList+=" rfMRI_REST2_LR"
-# TaskList+=" tfMRI_EMOTION_RL"
-# TaskList+=" tfMRI_EMOTION_LR"
-# TaskList+=" tfMRI_GAMBLING_RL"
-# TaskList+=" tfMRI_GAMBLING_LR"
-# TaskList+=" tfMRI_LANGUAGE_RL"
-# TaskList+=" tfMRI_LANGUAGE_LR"
-# TaskList+=" tfMRI_MOTOR_RL"
-# TaskList+=" tfMRI_MOTOR_LR"
-# TaskList+=" tfMRI_RELATIONAL_RL"
-# TaskList+=" tfMRI_RELATIONAL_LR"
-# TaskList+=" tfMRI_SOCIAL_RL"
-# TaskList+=" tfMRI_SOCIAL_LR"
-# TaskList+=" tfMRI_WM_RL"
-# TaskList+=" tfMRI_WM_LR"
+TaskList+=" rfMRI_REST2_AP"
 
 # Start or launch pipeline processing for each subject
 for Subject in $Subjlist ; do

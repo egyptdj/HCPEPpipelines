@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 get_batch_options() {
     local arguments=("$@")
@@ -39,9 +39,11 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100307" #Space delimited list of subject IDs
-EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+#StudyFolder="${HOME}/projects/Pipelines_ExampleData" #Location of Subject folders (named by subjectID)
+StudyFolder="/media/bispl/workdisk1/HCP_EP/HCPEPRelease/imagingcollection01"
+Subjlist="1001_01_MR" #Space delimited list of subject IDs
+#EnvironmentScript="${HOME}/projects/Pipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+EnvironmentScript="/media/bispl/workdisk2/22_EarlyPsychosis_2020/HCPpipelines-4.2.0/Examples/Scripts/SetUpHCPPipeline.sh"
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
@@ -69,43 +71,29 @@ echo "$@"
 PRINTCOM=""
 #PRINTCOM="echo"
 
-########################################## INPUTS ########################################## 
+########################################## INPUTS ##########################################
 
 #Scripts called by this script do assume they run on the outputs of the FreeSurfer Pipeline
 
 ######################################### DO WORK ##########################################
 
-Tasklist=""
-Tasklist="${Tasklist} rfMRI_REST1_RL"
-Tasklist="${Tasklist} rfMRI_REST1_LR"
-Tasklist="${Tasklist} rfMRI_REST2_RL"
-Tasklist="${Tasklist} rfMRI_REST2_LR"
-Tasklist="${Tasklist} tfMRI_EMOTION_RL"
-Tasklist="${Tasklist} tfMRI_EMOTION_LR"
-Tasklist="${Tasklist} tfMRI_GAMBLING_RL"
-Tasklist="${Tasklist} tfMRI_GAMBLING_LR"
-Tasklist="${Tasklist} tfMRI_LANGUAGE_RL"
-Tasklist="${Tasklist} tfMRI_LANGUAGE_LR"
-Tasklist="${Tasklist} tfMRI_MOTOR_RL"
-Tasklist="${Tasklist} tfMRI_MOTOR_LR"
-Tasklist="${Tasklist} tfMRI_RELATIONAL_RL"
-Tasklist="${Tasklist} tfMRI_RELATIONAL_LR"
-Tasklist="${Tasklist} tfMRI_SOCIAL_RL"
-Tasklist="${Tasklist} tfMRI_SOCIAL_LR"
-Tasklist="${Tasklist} tfMRI_WM_RL"
-Tasklist="${Tasklist} tfMRI_WM_LR"
+TaskList=""
+TaskList+=" rfMRI_REST1_PA"
+TaskList+=" rfMRI_REST1_AP"
+TaskList+=" rfMRI_REST2_PA"
+TaskList+=" rfMRI_REST2_AP"
 
 for Subject in $Subjlist ; do
   echo $Subject
 
-  for fMRIName in $Tasklist ; do
+  for fMRIName in $TaskList ; do
     echo "  ${fMRIName}"
     LowResMesh="32" #Needs to match what is in PostFreeSurfer, 32 is on average 2mm spacing between the vertices on the midthickness
     FinalfMRIResolution="2" #Needs to match what is in fMRIVolume, i.e. 2mm for 3T HCP data and 1.6mm for 7T HCP data
-    SmoothingFWHM="2" #Recommended to be roughly the grayordinates spacing, i.e 2mm on HCP data 
+    SmoothingFWHM="2" #Recommended to be roughly the grayordinates spacing, i.e 2mm on HCP data
     GrayordinatesResolution="2" #Needs to match what is in PostFreeSurfer. 2mm gives the HCP standard grayordinates space with 91282 grayordinates.  Can be different from the FinalfMRIResolution (e.g. in the case of HCP 7T data at 1.6mm)
     RegName="MSMSulc" #MSMSulc is recommended, if binary is not available use FS (FreeSurfer)
-    
+
     if [ -n "${command_line_specified_run_local}" ] ; then
         echo "About to run ${HCPPIPEDIR}/fMRISurface/GenericfMRISurfaceProcessingPipeline.sh"
         queuing_command=""
@@ -136,7 +124,6 @@ for Subject in $Subjlist ; do
       --regname=$RegName"
 
       echo ". ${EnvironmentScript}"
-            
+
    done
 done
-
